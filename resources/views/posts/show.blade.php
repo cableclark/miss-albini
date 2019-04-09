@@ -1,13 +1,15 @@
 @extends('templates.layout')
 
 @section ('content')
-    <div class="container is-widescreen">
-        <div>
+    <div class="container">
+        <div class="article">
              <h2>{{$post->title }}</h2>
 
-             <span>{{$post->created_at->diffForHumans()}}</span>
-             
-            {!!$post->body!!}
+             <span > Published: {{$post->created_at->diffForHumans()}}</span>
+             <div class="body-p">
+                
+                 {!!$post->body!!}
+             </div>
                          
         </div>   
         

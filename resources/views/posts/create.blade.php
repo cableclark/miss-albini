@@ -1,7 +1,7 @@
 @extends('templates.layout')
 
 @section ('content')
-    <div class="container is-widescreen">
+    <div class="container">
 
         <form action="/posts" method= "POST">
             @csrf

@@ -13,8 +13,21 @@
                             {{ session('status') }}
                         </div>
                     @endif
+                    <table class="table"> 
+                        <thead>Posts</thead>
 
-                    You are logged in!
+                            @foreach($posts as $post)
+                        
+                            <tr>   
+                                <td>{{$post->title}}</td>  
+                                <td><a href="/posts/{{$post->id}}/edit"><button type="button" class="btn btn-success"> Edit</button></a>
+                                
+                                </td>
+                             </tr>
+
+                            @endforeach
+                    
+                    </table>
                 </div>
             </div>
         </div>

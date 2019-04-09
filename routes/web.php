@@ -11,8 +11,7 @@
 |
 */
 
-Route::get('/', 'PostsController@index');
-
+Route::get('/', 'FrontController@index');
 
 Route::resource('/posts', 'PostsController');
 Auth::routes();
