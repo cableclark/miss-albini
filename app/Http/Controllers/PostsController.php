@@ -16,7 +16,7 @@ class PostsController extends Controller
      */
     public function index()
     {
-        $posts = Post::all();
+        $posts = Post::orderBy("created_at", "DESC")->get();
         return view('posts.template')->with('posts', $posts);
     }
 
@@ -39,7 +39,13 @@ class PostsController extends Controller
      */
     public function store(Request $request)
     {
-        $post= new Post($request->all());
+        
+        $validatedData = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
+
+        $post= new Post($validatedData);
 
         $post->save();
 
@@ -61,13 +67,14 @@ class PostsController extends Controller
     }
 
     /**
-     * Show the form for editing the specified resource.
+     * Show the form fot
      *
-     * @param  int  $id
+     * @param  int  $idt
      * @return \Illuminate\Http\Response
      */
     public function edit($id)
     {
+        
         $post= Post::findOrFail($id);
 
         return view('posts.edit')->with('post', $post);
@@ -83,9 +90,14 @@ class PostsController extends Controller
     public function update(Request $request, $id)
     {
         //
+        $validatedData = $request->validate([
+            'title' => 'required|unique:posts|max:255',
+            'body' => 'required',
+        ]);
         $post= Post::findOrFail($id);
-        $post->title = $request->input('title');
-        $post->body= $request->input('body');
+        $post->title = $validatedData->input('title');
+        $post->body= $validatedData->input('body');
+
         $post->update();
 
         return view('posts.show')->with('post', $post);

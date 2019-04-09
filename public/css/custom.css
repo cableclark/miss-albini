@@ -1,3 +1,5 @@
+/* TODO : set Up varaibles */
+
 body {
     background-color: rgba(255, 255, 255, 1);
 }
@@ -27,6 +29,10 @@ h2 {
     line-height: 1.6rem;
     color: rgba(28, 37, 65, 1);
     
+}
+
+#disqus_thread {
+    max-width: 820px;
 
 }
 .article span {
@@ -42,6 +48,16 @@ nav {
     margin-bottom: 2rem;
 }
 
+label {
+    font-size: 1.2rem;
+    color: rgba(91, 192, 190, 1);
+}
+
+textarea {
+    font-family: 'Prata', serif;
+    font-size: 1.2rem;
+
+}
 
 /* Coolors Exported Palette - coolors.co/0b132b-1c2541-3a506b-5bc0be-ffffff */
 

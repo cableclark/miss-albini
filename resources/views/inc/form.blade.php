@@ -1,40 +1,26 @@
-<script src="https://cloud.tinymce.com/5/tinymce.min.js?apiKey=tnhabyvsuc7lsvuu7qstzizsgyc0o1efxtwm33qxnw0a2rwu"></script> 
+@include('inc.summernote')
 
-
-  <script>tinymce.init({ selector:'textarea' });</script>
-<div class="field">
-        <label class="label">Title</label>
-        <div class="control">
-        <input class="input" type="text" placeholder="Text input" name="title" value="{{isset($post)? $post->title :old('title')}}">
-        </div>
+    <div class="form-group">
+        <label for="title">Наслов: </label>
+        <input class="form-control" type="text" placeholder="Text input" name="title" value="{{isset($post)? $post->title :old('title')}}">
       </div>
       
-      <div class="field">
-        <label class="label">Message</label>
-        <div class="control">
-          <textarea id="textarea" class="textarea" placeholder="Textarea" name="body"> {{isset($post)? $post->body :old('body')}} </textarea>
-        </div>
+      <div class="form-group">
+        <label for="body">Текст: </label>
+        <textarea id="summernote" class="form-control" placeholder="Textarea" name="body"> {{isset($post)? $post->body :old('body')}} </textarea>
+      </div>
+      
+      <div class="form-group">
+          <button type= "submit" class="btn btn-primary">Submit</button>
+          <a href="/posts" <button class="btn">Cancel</button></a>
+        
       </div>
 
-    
-      {{-- <div class="field">
-        <label class="label">Subject</label>
-        <div class="control">
-            <div class="select">
-            <select>
-                <option>Select dropdown</option>
-                <option>With options</option>
-            </select>
-            </div>
-        </div>
-    </div> --}}
-      
-      <div class="field is-grouped">
-        <div class="control">
-          <button type= "submit" class="button is-link">Submit</button>
-        </div>
-        <div class="control">
-          <button class="button is-text">Cancel</button>
-        </div>
-      </div>
-    
+      <div id="summernote"></div>
+      <script>
+        $('#summernote').summernote({
+          placeholder: 'Уште еден интересен пост...',
+          tabsize: 4,
+          height: 300
+        });
+      </script> 
