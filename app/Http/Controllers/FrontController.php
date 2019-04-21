@@ -9,9 +9,14 @@ class FrontController extends Controller
 {
     //
     public function index () {
-           $posts = Post::orderBy('created_at', 'DESC')->get(); 
+        return view('posts.template');
+    }
 
-           return view('posts.template')->with('posts', $posts);
+    
+    public function  render () {
+           $posts = Post::orderBy('created_at', 'DESC')->paginate(3); 
+
+           return response()->json($posts);
 
     }
 }

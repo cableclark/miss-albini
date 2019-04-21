@@ -19,7 +19,7 @@
                             @foreach($posts as $post)
                         
                             <tr>   
-                                <td>{{$post->title}}</td>  
+                                <td>{{$post->title}} <i>Објавено на:{{$post->created_at}} </i> </td>  
                                 <td><a href="/posts/{{$post->id}}/edit"><button type="button" class="btn btn-success"> Edit</button></a>
                                 
                                 </td>

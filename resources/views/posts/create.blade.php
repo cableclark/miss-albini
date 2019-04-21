@@ -2,8 +2,8 @@
 
 @section ('content')
     <div class="container">
-
-        <form action="/posts" method= "POST">
+         @include('inc.flash')
+        <form action="/posts" method= "POST"  enctype="multipart/form-data">
             @csrf
             @include('inc.form') 
         </form>     

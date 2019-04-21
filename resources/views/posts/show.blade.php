@@ -2,6 +2,7 @@
 
 @section ('content')
     <div class="container">
+        @include('inc.status')
         <div class="article">
              <h2>{{$post->title }}</h2>
 

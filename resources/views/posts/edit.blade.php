@@ -2,7 +2,7 @@
 
 @section ('content')
     <div class="container">
-
+        @include('inc.flash')
         <form action="/posts/{{$post->id}}" method= "POST">
             <input type="hidden" name="_method" value="PUT">
             @csrf
