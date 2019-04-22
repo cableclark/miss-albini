@@ -11,9 +11,15 @@
       </div>
     
       <div class="form-group">
-        <label for="exampleFormControlFile1">Example file input</label>
-        <input type="file" class="form-control-file" id="exampleFormControlFile1" name="featured_image">
+        <label for="featured_image">Set featured image</label>
+        <input type="file" class="form-control-file" id="featured_image" name="featured_image">
       </div>
+
+      <div class="form-group">
+        <label for="upload_image">Upload images</label>
+        <input type="file" class="form-control-file" id="featured_image" name="upload_images">
+      </div>
+
 
       <div class="form-group">
           <button type= "submit" class="btn btn-primary">Submit</button>

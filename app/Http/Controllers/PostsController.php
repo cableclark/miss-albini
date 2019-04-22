@@ -51,12 +51,18 @@ class PostsController extends Controller
             'title' => 'required|unique:posts|max:255',
             'body' => 'required',
         ]);
-         
-        $path = $this->saveImagePath($request);
+        
         $post= new Post($validatedData);
-        $post->is_draft = 1;
-        $post->featured_image = $path;            
+        $post->is_draft = 0;
+        if (!empty ($request->file('featured_image'))) {
+            $path = $this->saveImagePath($request);
+            $post->featured_image = $path; 
+         }  
+
+        $post->featured_image = "Ho ho ho";
+        
         $post->save();
+        // dd($post->id);
 
         return redirect('home')->with('status', 'The post was saved!');
     }
@@ -102,11 +108,14 @@ class PostsController extends Controller
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'body' => 'required',
+            'featured_image'=> 'image|max:1999 ' 
         ]);
         $post= Post::findOrFail($id);
 
         $post->title = $validatedData['title'];
         $post->body= $validatedData['body'];
+            
+        $post->featured_image= $this->saveImagePath($validatedData); 
 
         $post->update();
 
@@ -127,24 +136,26 @@ class PostsController extends Controller
         return redirect("/home");
     }
 
-    public function saveImagePath(Request $request) {
-        $filenameWithExt=  $request->file('featured_image')->getClientOriginalName();
+    // Saves the image on disk and in data base
+    public function saveImagePath($request) {
+        
+         //1. Get the filename of the image   
+        $filenameWithExt=  $request['featured_image']->getClientOriginalName();
         
         //2.Remove exntenstion
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
-     
 
         //3. Get exntension   
-        $extension = $request->file('featured_image')->getClientOriginalExtension();
+        $extension = $request['featured_image']->getClientOriginalExtension();
+        
         //4. Add the name + the time + extesion and voila...
-
         $filenameToStore = $filename . "_" . time() . "_" . $extension;
         
         //...Done 
 
-        $path = $request->file('featured_image')->storeAs('public/', $filenameToStore);
+        $path = $request['featured_image']->storeAs('/public', $filenameToStore);
         
-        return $path;
+        return $filenameToStore;
         
     }  
 }
