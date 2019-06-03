@@ -12,7 +12,7 @@ class PostsController extends Controller
     {
         $this->middleware('auth')->except(['index', 'show','featured_image']);
     }
-    
+
     /**
      * Display a listing of the resource.
      *
@@ -32,7 +32,7 @@ class PostsController extends Controller
     public function create()
     {
         //
-    
+
 
         return view('posts.create');
     }
@@ -51,21 +51,29 @@ class PostsController extends Controller
             'title' => 'required|unique:posts|max:255',
             'body' => 'required',
         ]);
-        
+
         $post= new Post($validatedData);
-        $post->is_draft = 0;
+        $post->featured_image = "/defaultImage.jpg";
+        $post->is_draft = 1;
+
+        if (!empty ($request->files)) {
+
+            // $path = $this->saveImages($request);
+
+            $this->uploadImages ($request, $validatedData);
+         }
+
         if (!empty ($request->file('featured_image'))) {
             $path = $this->saveImagePath($request);
-            $post->featured_image = $path; 
-         }  
+            $post->featured_image = $path;
+         }
 
-        $post->featured_image = "Ho ho ho";
-        
         $post->save();
         // dd($post->id);
 
         return redirect('home')->with('status', 'The post was saved!');
     }
+
 
     /**
      * Display the specified resource.
@@ -89,7 +97,7 @@ class PostsController extends Controller
      */
     public function edit($id)
     {
-        
+
         $post= Post::findOrFail($id);
 
         return view('posts.edit')->with('post', $post);
@@ -104,22 +112,32 @@ class PostsController extends Controller
      */
     public function update(Request $request, $id)
     {
-        //
+
         $validatedData = $request->validate([
             'title' => 'required|max:255',
             'body' => 'required',
-            'featured_image'=> 'image|max:1999 ' 
+            'featured_image'=> 'image|max:1999 '
         ]);
-        $post= Post::findOrFail($id);
 
+        $post= Post::findOrFail($id);
         $post->title = $validatedData['title'];
         $post->body= $validatedData['body'];
-            
-        $post->featured_image= $this->saveImagePath($validatedData); 
+
+        if (!empty ($request->photos)) {
+            dd($request->photos);
+            // $path = $this->saveImages($request);
+
+            $this->uploadImages ($request, $validatedData);
+         }
+
+        if ($request->featured_image) {
+            $post->featured_image= $this->saveImagePath($validatedData);
+        }
 
         $post->update();
 
         return redirect('home')->with('status', 'Profile updated!');
+
     }
 
     /**
@@ -136,26 +154,61 @@ class PostsController extends Controller
         return redirect("/home");
     }
 
-    // Saves the image on disk and in data base
+    /**
+     * Saves the image on disk and in data base.
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return String $filenmaToStore
+     */
+
+    public function uploadImages (Request $request, $validatedData) {
+
+        $post = new Post($validatedData);
+        $post->featured_image = "/defaultImage.jpg";
+        $post->is_draft = 1;
+
+
+        if (!empty ($request->file('featured_image'))) {
+            $path = $this->saveImagePath($request);
+            $post->featured_image = $path;
+         }
+
+         $post->save();
+
+        foreach ($request->file("photos") as $image) {
+            //TODO  save images in database;
+            dd($image);
+
+        }
+
+    }
+
+
+    /**
+     * Prepares a filename for iamge file
+     *
+     * @param  \Illuminate\Http\Request  $request
+     * @return String $filenmaToStore
+     */
     public function saveImagePath($request) {
-        
-         //1. Get the filename of the image   
+
+         //1. Get the filename of the image
         $filenameWithExt=  $request['featured_image']->getClientOriginalName();
-        
+
         //2.Remove exntenstion
         $filename = pathinfo($filenameWithExt, PATHINFO_FILENAME);
 
-        //3. Get exntension   
+        //3. Get exntension
         $extension = $request['featured_image']->getClientOriginalExtension();
-        
+
         //4. Add the name + the time + extesion and voila...
         $filenameToStore = $filename . "_" . time() . "_" . $extension;
-        
-        //...Done 
+
+        //...Done
 
         $path = $request['featured_image']->storeAs('/public', $filenameToStore);
-        
+
         return $filenameToStore;
-        
-    }  
+
+    }
 }

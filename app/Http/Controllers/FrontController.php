@@ -14,6 +14,7 @@ class FrontController extends Controller
 
     
     public function  render () {
+        
            $posts = Post::orderBy('created_at', 'DESC')->paginate(3); 
 
            return response()->json($posts);
