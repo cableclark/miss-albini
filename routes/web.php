@@ -22,9 +22,9 @@ Auth::routes();
 Route::get('/home', 'HomeController@index')->name('home');
 
 
-//Photo routes 
-Route::get('/photos/create/{id}', 'PhotosController@create');
-
-Route::post('/photos/store', 'PhotosController@store');
+//Photo routes
+Route::get('/photos/', 'PhotosController@index');
+Route::get('/photos/create/', 'PhotosController@create');
+Route::post('/photos', 'PhotosController@store');
 Route::get('/photos/{id}', 'PhotosController@show');
 Route::delete('/photos/{id}', 'PhotosController@destroy');

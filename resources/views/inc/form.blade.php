@@ -1,4 +1,4 @@
-@include('inc.summernote')
+@include('inc.cky')
 
     <div class="form-group">
 
@@ -12,8 +12,7 @@
     <div class="form-group">
 
         <label for="body">Текст: </label>
-
-        <textarea id="summernote" class="form-control" placeholder="Textarea" name="body"> {{isset($post)? $post->body :old('body')}} </textarea>
+        <textarea id="editor1" name="body">{{isset($post)? $post->body :old('body')}}</textarea>
 
     </div>
 
@@ -25,14 +24,6 @@
 
     </div>
 
-    <div class="form-group">
-
-        <label for="upload_image">Upload images</label>
-
-        <input type="file" multiple="multiple" name="photos[]" class="form-control-file" id="featured_image" name="upload_images">
-
-    </div>
-
 
     <div class="form-group">
 
@@ -41,15 +32,3 @@
           <a href="/posts"> <button class="btn">Cancel</button></a>
 
     </div>
-
-    <div id="summernote"></div>
-
-    <script>
-
-        $('#summernote').summernote({
-          placeholder: 'Уште еден интересен пост...',
-          tabsize: 4,
-          height: 300
-        });
-        
-    </script>

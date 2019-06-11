@@ -19,9 +19,11 @@ class PostsController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
+
     public function index()
     {
         $posts = Post::orderBy("created_at", "DESC")->get();
+
         return view('posts.template')->with('posts', $posts);
     }
 
@@ -32,9 +34,6 @@ class PostsController extends Controller
      */
     public function create()
     {
-        //
-
-
         return view('posts.create');
     }
 
@@ -65,11 +64,6 @@ class PostsController extends Controller
 
         $post->save();
 
-        if (!empty ($request)) {
-            $this->uploadImages ($request, $post->id);
-         }
-
-
         return redirect('home')->with('status', 'The post was saved!');
     }
 
@@ -82,7 +76,7 @@ class PostsController extends Controller
      */
     public function show($id)
     {
-        //
+
         $post= Post::findOrFail($id);
 
         return view('posts.show')->with('post', $post);
@@ -98,8 +92,9 @@ class PostsController extends Controller
     {
 
         $post= Post::findOrFail($id);
+        $photos = Photo::all();
 
-        return view('posts.edit')->with('post', $post);
+        return view('posts.edit')->with(compact( 'photos'))->with(compact( 'post'));;
     }
 
     /**
@@ -122,9 +117,6 @@ class PostsController extends Controller
         $post->title = $validatedData['title'];
         $post->body = $validatedData['body'];
 
-        if (!empty ($request->photos)) {
-            $this->uploadImages($request, $id);
-         }
 
         if ($request->featured_image) {
             $post->featured_image = $this->saveImagePath($request->file("featured_image"));
@@ -150,25 +142,6 @@ class PostsController extends Controller
         return redirect("/home");
     }
 
-    /**
-     * Saves the image on disk and in data base.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return String $filenmaToStore
-     */
-
-    public function uploadImages (Request $request, $id) {
-        foreach ($request->file("photos") as $image) {
-
-            $path = $this->saveImagePath($image, "upload_image");
-            $photo = new Photo();
-            $photo->photo = $path;
-            $photo->title =  "";
-            $photo->post_id = $id;
-            $photo->save();
-        }
-
-    }
 
     /**
      * Prepares a filename for iamge file
@@ -177,8 +150,8 @@ class PostsController extends Controller
      * @return String $filenmaToStore
      */
     public function saveImagePath($image) {
-         //1. Get the filename of the image
 
+         //1. Get the filename of the image
         $filenameWithExt= $image->getClientOriginalName();
 
         //2.Remove exntenstion
@@ -189,8 +162,8 @@ class PostsController extends Controller
 
         //4. Add the name + the time + extesion and voila...
         $filenameToStore = $filename . "_" . time() . "_" . $extension;
-        //...Done
 
+        //...Done
         $path = $image->storeAs('/public', $filenameToStore);
 
         return $filenameToStore;
