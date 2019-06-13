@@ -34,7 +34,9 @@ class PostsController extends Controller
      */
     public function create()
     {
-        return view('posts.create');
+        $photos = Photo::all();
+
+        return view('posts.create')->with(compact('photos'));
     }
 
     /**
@@ -55,7 +57,6 @@ class PostsController extends Controller
         $post= new Post($validatedData);
         $post->featured_image = "/defaultImage.jpg";
         $post->is_draft = 1;
-
 
         if (!empty ($request->file('featured_image'))) {
             $path = $this->saveImagePath($request->file("featured_image"));
@@ -92,6 +93,7 @@ class PostsController extends Controller
     {
 
         $post= Post::findOrFail($id);
+
         $photos = Photo::all();
 
         return view('posts.edit')->with(compact( 'photos'))->with(compact( 'post'));;
@@ -139,9 +141,8 @@ class PostsController extends Controller
         //
         Post::find($id)->delete();
 
-        return redirect("/home");
+        return "A ok";
     }
-
 
     /**
      * Prepares a filename for iamge file

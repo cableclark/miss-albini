@@ -5,8 +5,11 @@
          @include('inc.flash')
         <form action="/posts" method= "POST"  enctype="multipart/form-data">
             @csrf
-            @include('inc.form') 
-        </form>     
-    
-    </div> 
+            @include('inc.form')
+        </form>
+      @include('inc.images')
+      
+      @include('inc.editor')
+
+    </div>
 @endsection
