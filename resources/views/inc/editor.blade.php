@@ -1,5 +1,6 @@
 <script>
           CKEDITOR.replace( 'editor1' );
+          CKEDITOR.config.height = 500;   
  </script>
 
 <script type="text/javascript">

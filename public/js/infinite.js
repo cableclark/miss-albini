@@ -2,9 +2,9 @@
 var pageNumber = 1;
 
 // Last paginated page;
-var lastPage  = 0;  
+var lastPage  = 0;
 
-// Element in which data is redenred; 
+// Element in which data is redenred;
 var div = $(".results");
 
 // Ajax response data;
@@ -22,12 +22,12 @@ $(window).scroll(function () {
 
 //Checks if the user has scrolled to the bottom of the page;
 function hasReachedTheBottom() {
-    if($(window).scrollTop( ) +  $(window).height() == $(document).height()) { 
+    if($(window).scrollTop( ) +  $(window).height() == $(document).height()) {
 
-        checkForLastPage(); 
+        checkForLastPage();
 
         getData();
-    }   
+    }
 }
 
 // Checks if we have reached last paginated page;
@@ -37,27 +37,27 @@ function checkForLastPage () {
 
     if(pageNumber >= lastPage ) {
         return;
-    }     
+    }
 }
 // Checks if the last paginated page has been set as a varible, so it does't have to set it on each Ajax call;
 function checkIfLastPageIsSet (response) {
 
     if ( lastPage  > 0 ) {
-        return; 
+        return;
 
-    }  else { 
+    }  else {
         lastPage = response.last_page + 1;
     }
-} 
+}
 
 
 //Makes the ajax call, duh;
 function getData () {
 
-       addLoadingToDOM () 
+       addLoadingToDOM ()
 
        runAjax();
-      
+
 }
 // Self-explanatory, eh?;
 function runAjax () {
@@ -72,7 +72,7 @@ function runAjax () {
             checkIfLastPageIsSet (response);
 
             }
-        })     
+        })
 }
 
 // You custumize the way the data gets rendered on the DOM here ;
@@ -83,22 +83,22 @@ function renderHTML (response) {
     data.forEach(function(element) {
 
         div.append('<a href="posts/'+element.id +'"><h2>' + element.title + "</h2></a>");
-        
+
         div.append("<p>" + element.body+ "</p>");
     });
 
 }
 
-//This two functions are used for the loading "animation" 
+//This two functions are used for the loading "animation"
 
 function addLoadingToDOM () {
 
-    div.append('<p class="load"> Loading </p>' ); 
+    div.append('<p class="load"> Loading...> </p>' ); 
 
-} 
+}
 
 function removeLoadingFromDOM () {
 
     $(".load" ).remove();
 
-} 
+}
